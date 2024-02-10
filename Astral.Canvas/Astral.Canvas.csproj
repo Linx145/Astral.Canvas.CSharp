@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>OSX;x64</Platforms>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -11,24 +11,6 @@
     <Folder Include="runtimes\osx-arm64\" />
     <Folder Include="runtimes\osx-x64\" />
     <Folder Include="runtimes\win-x64\" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <None Update="runtimes/win-x64/Astral.Canvas.Dynamic.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(OS)|$(Platform)' == 'OSX|x64'">
-    <None Update="runtimes/osx-x64/Astral.Canvas.Dynamic.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(OS)|$(Platform)' == 'OSX|ARM64'">
-    <None Update="runtimes/osx-arm64/Astral.Canvas.Dynamic.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

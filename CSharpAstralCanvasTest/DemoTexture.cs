@@ -48,8 +48,8 @@ namespace CSharpAstralCanvasTest
             Point resolution = application.GetWindow(0).resolution;
             WorldViewProjection wvp = new WorldViewProjection(
                 Matrix4x4.CreateTranslation(drawPos.X, drawPos.Y, 0f) * Matrix4x4.CreateScale(2f, 2f, 2f), 
-                Matrix4x4.Identity, 
-                Matrix4x4.CreateOrthographic(1920, 1080, 0f, 1000f)
+                System.OperatingSystem.IsMacOS() ? Matrix4x4.CreateScale(1f, -1f, 1f) : Matrix4x4.Identity, 
+                Matrix4x4.CreateOrthographic(1024, 768, 0f, 1000f)
                 );
 
             application.graphicsDevice.StartRenderProgram(renderProgram, Color.Black);
@@ -120,7 +120,7 @@ namespace CSharpAstralCanvasTest
         public static void Start()
         {
             application = new Application("YIPPEE", "", 0, 0, 0f);
-            application.AddWindow(1920, 1080, true);
+            application.AddWindow(1024, 768, true);
             application.Run(Update, Draw, Initialize, Unload);
         }
     }
