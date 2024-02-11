@@ -6,11 +6,15 @@ namespace Astral.Canvas
     {
         public IntPtr handle;
         public RenderTarget currentRenderTarget;
+        public RenderProgram currentRenderProgram;
+        public int currentRenderPass;
 
         public Graphics(IntPtr handle)
         {
             this.handle = handle;
             currentRenderTarget = null;
+            currentRenderProgram = null;
+            currentRenderPass = 0;
         }
         public Graphics(Application application)
         {
@@ -20,14 +24,18 @@ namespace Astral.Canvas
         public void StartRenderProgram(RenderProgram program, Color clearColor)
         {
             AstralCanvas.Graphics_StartRenderProgram(handle, program.handle, clearColor);
+            currentRenderProgram = program;
         }
         public void NextRenderPass()
         {
+            currentRenderPass++;
             AstralCanvas.Graphics_NextRenderPass(handle);
         }
         public void EndRenderProgram()
         {
+            currentRenderPass = 0;
             AstralCanvas.Graphics_EndRenderProgram(handle);
+            currentRenderProgram = null;
         }
 
         public void UseRenderPipeline(RenderPipeline pipeline)
@@ -38,7 +46,11 @@ namespace Astral.Canvas
         public void SetRenderTarget(RenderTarget renderTarget)
         {
             currentRenderTarget = renderTarget;
-            AstralCanvas.Graphics_SetRenderTarget(handle, renderTarget.handle);
+            if (renderTarget == null)
+            {
+                AstralCanvas.Graphics_SetRenderTarget(handle, IntPtr.Zero);
+            }
+            else AstralCanvas.Graphics_SetRenderTarget(handle, renderTarget.handle);
         }
         public void SetVertexBuffer(VertexBuffer vertexBuffer, uint bindSlot)
         {
@@ -52,7 +64,14 @@ namespace Astral.Canvas
         {
             AstralCanvas.Graphics_DrawIndexedPrimitives(handle, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
         }
-
+        public Rectangle GetClipArea()
+        {
+            return AstralCanvas.Graphics_GetClipArea(handle);
+        }
+        public void SetClipArea(Rectangle rectangle)
+        {
+            AstralCanvas.Graphics_SetClipArea(handle, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+        }
         public unsafe void SetShaderVariables<T>(string variableName, ReadOnlySpan<T> span) where T : unmanaged
         {
             fixed (T* ptr = span)

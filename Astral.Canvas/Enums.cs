@@ -54,6 +54,7 @@
     public enum ImageFormat
     {
         Undefined,
+        BackbufferFormat,
         R8G8B8A8Unorm,
         R8G8B8A8SNorm,
         R8G8B8A8Srgb,
@@ -67,8 +68,7 @@
         Depth16,
         Depth16Stencil8,
         Depth24Stencil8,
-        Depth32,
-        BackbufferFormat
+        Depth32
     }
     public enum SampleMode
     {

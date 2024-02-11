@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpAstralCanvasTest", "CSharpAstralCanvasTest\CSharpAstralCanvasTest.csproj", "{F35115CC-F8BC-4FE4-A2AC-479C5B34FDCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astral.Canvas", "Astral.Canvas\Astral.Canvas.csproj", "{8D6D1CD2-B3D6-4647-9BB5-8A4A6B8F79A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Astral.Canvas", "Astral.Canvas\Astral.Canvas.csproj", "{8D6D1CD2-B3D6-4647-9BB5-8A4A6B8F79A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

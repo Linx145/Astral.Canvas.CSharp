@@ -63,11 +63,15 @@ namespace Astral.Canvas
             IntPtr textureHandle = AstralCanvas.Texture2D_FromHandle(imageHandle, width, height, imageFormat, usedForRenderTarget);
             return new Texture2D(textureHandle, width, height, false, false, usedForRenderTarget);
         }
-        public static unsafe Texture2D FromData(byte[] bytes, uint width, uint height, ImageFormat imageFormat, SamplerState samplerState, bool usedForRenderTarget)
+        public static unsafe Texture2D FromData(byte[] bytes, uint width, uint height, ImageFormat imageFormat, bool usedForRenderTarget)
         {
+            if (bytes == null)
+            {
+                return new Texture2D(AstralCanvas.Texture2D_FromData(IntPtr.Zero, width, height, imageFormat, usedForRenderTarget), width, height, false, true, usedForRenderTarget);
+            }
             fixed (byte* fixedBytes = &bytes[0])
             {
-                IntPtr textureHandle = AstralCanvas.Texture2D_FromData((IntPtr)fixedBytes, width, height, imageFormat, samplerState.handle, usedForRenderTarget);
+                IntPtr textureHandle = AstralCanvas.Texture2D_FromData((IntPtr)fixedBytes, width, height, imageFormat, usedForRenderTarget);
                 return new Texture2D(textureHandle, width, height, false, true, usedForRenderTarget);
             }
         }

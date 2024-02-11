@@ -2,6 +2,21 @@
 
 namespace Astral.Canvas
 {
+    public struct ShaderVariable
+    {
+        public IntPtr handle;
+        public ShaderVariable(IntPtr handle)
+        {
+            this.handle = handle;
+        }
+        public ShaderResourceType type => AstralCanvas.ShaderVariable_GetType(handle);
+        public ShaderInputAccessedBy accessedBy => AstralCanvas.ShaderVariable_GetAccessedBy(handle);
+        public uint size => AstralCanvas.ShaderVariable_GetSize(handle);
+        public uint arrayLength => AstralCanvas.ShaderVariable_GetArrayLength(handle);
+        public uint set => AstralCanvas.ShaderVariable_GetSet(handle);
+        public uint binding => AstralCanvas.ShaderVariable_GetBinding(handle);
+        public string name => AstralCanvas.ShaderVariable_GetName(handle);
+    }
     public class Shader : IDisposable
     {
         public IntPtr handle;
@@ -68,6 +83,9 @@ namespace Astral.Canvas
         {
             return AstralCanvas.Shader_GetVariableBinding(handle, variableName);
         }
-
+        public ShaderVariable GetVariableAt(int index)
+        {
+            return new ShaderVariable(AstralCanvas.Shader_GetVariableAt(handle, (UIntPtr)index));
+        }
     }
 }
