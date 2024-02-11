@@ -2,6 +2,20 @@
 
 namespace Astral.Canvas
 {
+    public struct RenderPass
+    {
+        public IntPtr arrayMemberHandle;
+        public RenderPass(IntPtr arrayMemberHandle)
+        {
+            this.arrayMemberHandle = arrayMemberHandle;
+        }
+        public RenderPass AddInput(int input)
+        {
+            AstralCanvas.RenderPass_AddInput(arrayMemberHandle, input);
+            return this;
+        }
+    }
+
     public class RenderProgram
     {
         public IntPtr handle;
@@ -14,15 +28,15 @@ namespace Astral.Canvas
         {
             return AstralCanvas.RenderProgram_AddAttachment(handle, imageFormat, clearColor, clearDepth, outputType);
         }
-        public void AddRenderPass(int colorAttachmentIndex, int depthAttachmentIndex = -1)
+        public RenderPass AddRenderPass(int colorAttachmentIndex, int depthAttachmentIndex = -1)
         {
-            AstralCanvas.RenderProgram_AddRenderPass(handle, colorAttachmentIndex, depthAttachmentIndex);
+            return new RenderPass(AstralCanvas.RenderProgram_AddRenderPass(handle, colorAttachmentIndex, depthAttachmentIndex));
         }
-        public unsafe void AddRenderPasses(ReadOnlySpan<int> colorAttachmentIndex, int depthAttachmentIndex = -1)
+        public unsafe RenderPass AddRenderPasses(ReadOnlySpan<int> colorAttachmentIndex, int depthAttachmentIndex = -1)
         {
             fixed (int* ptr = colorAttachmentIndex)
             {
-                AstralCanvas.RenderProgram_AddRenderPasses(handle, (IntPtr)ptr, (UIntPtr)colorAttachmentIndex.Length, depthAttachmentIndex);
+                return new RenderPass(AstralCanvas.RenderProgram_AddRenderPasses(handle, (IntPtr)ptr, (UIntPtr)colorAttachmentIndex.Length, depthAttachmentIndex));
             }
         }
         public void Construct()

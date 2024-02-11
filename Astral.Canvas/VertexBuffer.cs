@@ -14,7 +14,7 @@ namespace Astral.Canvas
             this.vertexDeclaration = vertexDeclaration;
             this.vertexCount = vertexCount;
         }
-        public unsafe void SetData<T>(T[] vertices) where T : unmanaged
+        public unsafe void SetData<T>(ReadOnlySpan<T> vertices) where T : unmanaged
         {
             fixed (T* ptr = vertices)
             {

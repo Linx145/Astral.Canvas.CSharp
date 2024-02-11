@@ -6,7 +6,7 @@ namespace Astral.Canvas
 {
     public static class Input
     {
-
+        public static bool mouseInteracted = false;
         /// <summary>
         /// Returns true if a key is just pressed or is being held down.
         /// </summary>

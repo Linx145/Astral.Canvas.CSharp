@@ -44,7 +44,7 @@ namespace CSharpAstralCanvasTest
             renderPipeline = new RenderPipeline(shader, CullMode.CullNone, PrimitiveType.TriangleList, BlendState.AlphaBlend, false, false, new VertexDeclaration[] { VertexPositionColor.Declaration });
 
             vertexBuffer = new VertexBuffer(VertexPositionColor.Declaration, 3, false);
-            vertexBuffer.SetData(new VertexPositionColor[] {
+            vertexBuffer.SetData<VertexPositionColor>(new VertexPositionColor[] {
                 new VertexPositionColor(new Vector3(-1f, 1f, 0f), new Vector4(1f, 0f, 0f, 1f)),
                 new VertexPositionColor(new Vector3(0f, -1f, 0f), new Vector4(0f, 1f, 0f, 1f)),
                 new VertexPositionColor(new Vector3(1f, 1f, 0f), new Vector4(0f, 0f, 1f, 1f)),

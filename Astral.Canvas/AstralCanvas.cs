@@ -126,6 +126,10 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_FromFile", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
         public static extern IntPtr Texture2D_FromFile(string fileName);
 
+        [DllImport(dllPath, EntryPoint = "AstralCanvasVertexDeclaration_AddElement", CallingConvention = CallingConvention.Winapi)]
+        public static extern void VertexDeclaration_AddElement(IntPtr ptr, VertexElement element);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasVertexDeclaration_Create", CallingConvention = CallingConvention.Winapi)]
+        public static extern IntPtr VertexDeclaration_Create(UIntPtr size, VertexInputRate inputRate);
         [DllImport(dllPath, EntryPoint = "AstralCanvasVertexDeclaration_GetElementSize", CallingConvention = CallingConvention.Winapi)]
         public static extern UIntPtr VertexDeclaration_GetElementSize(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasVertexDeclaration_GetInputRate", CallingConvention = CallingConvention.Winapi)]
@@ -166,7 +170,7 @@ namespace Astral.Canvas
         public static extern void IndexBuffer_SetData(IntPtr ptr, IntPtr bytes, UIntPtr sizeOfBytes);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetTexture", CallingConvention = CallingConvention.Winapi)]
-        public static extern IntPtr RenderTarget_GetTexture(IntPtr ptr);
+        public static extern IntPtr RenderTarget_GetTexture(IntPtr ptr, UIntPtr index);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetDepthBuffer", CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr RenderTarget_GetDepthBuffer(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetWidth", CallingConvention = CallingConvention.Winapi)]
@@ -181,6 +185,8 @@ namespace Astral.Canvas
         public static extern bool RenderTarget_GetUseStatus(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_SetUseStatus", CallingConvention = CallingConvention.Winapi)]
         public static extern void RenderTarget_SetUseStatus(IntPtr ptr, bool hasBeenUsedBefore);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_CreateWithInputTextures", CallingConvention = CallingConvention.Winapi)]
+        public static extern unsafe IntPtr RenderTarget_CreateWithInputTextures(uint width, uint height, IntPtr* textures, UIntPtr numTextures);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_CreateFromTextures", CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr RenderTarget_CreateFromTextures(IntPtr thisBackendTexture, IntPtr thisDepthBuffer, bool isBackbuffer);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_Create", CallingConvention = CallingConvention.Winapi)]
@@ -193,16 +199,20 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderProgram_AddAttachment", CallingConvention = CallingConvention.Winapi)]
         public static extern int RenderProgram_AddAttachment(IntPtr ptr, ImageFormat imageFormat, bool clearColor, bool clearDepth, RenderPassOutputType outputType);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderProgram_AddRenderPass", CallingConvention = CallingConvention.Winapi)]
-        public static extern void RenderProgram_AddRenderPass(IntPtr ptr, int colorAttachmentID, int depthAttachmentID);
+        public static extern IntPtr RenderProgram_AddRenderPass(IntPtr ptr, int colorAttachmentID, int depthAttachmentID);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderProgram_AddRenderPasses", CallingConvention = CallingConvention.Winapi)]
-        public static extern void RenderProgram_AddRenderPasses(IntPtr ptr, IntPtr colorAttachmentIDs, UIntPtr colorAttachmentIDsCount, int depthAttachmentID);
+        public static extern IntPtr RenderProgram_AddRenderPasses(IntPtr ptr, IntPtr colorAttachmentIDs, UIntPtr colorAttachmentIDsCount, int depthAttachmentID);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderProgram_Construct", CallingConvention = CallingConvention.Winapi)]
         public static extern void RenderProgram_Construct(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderProgram_Deinit", CallingConvention = CallingConvention.Winapi)]
         public static extern void RenderProgram_Deinit(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasRenderPass_AddInput", CallingConvention = CallingConvention.Winapi)]
+        public static extern void RenderPass_AddInput(IntPtr ptr, int inputIndex);
 
-        //IntPtr Graphics_GetCurrentRenderProgram(IntPtr ptr);
-        //IntPtr Graphics_GetCurrentRenderTarget(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_GetCurrentRenderProgram", CallingConvention = CallingConvention.Winapi)]
+        public static extern IntPtr Graphics_GetCurrentRenderProgram(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_GetCurrentRenderTarget", CallingConvention = CallingConvention.Winapi)]
+        public static extern IntPtr Graphics_GetCurrentRenderTarget(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_GetCurrentRenderProgramPass", CallingConvention = CallingConvention.Winapi)]
         public static extern uint Graphics_GetCurrentRenderProgramPass(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetVertexBuffer", CallingConvention = CallingConvention.Winapi)]
@@ -213,13 +223,14 @@ namespace Astral.Canvas
         public static extern void Graphics_SetRenderTarget(IntPtr ptr, IntPtr target);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_StartRenderProgram", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_StartRenderProgram(IntPtr ptr, IntPtr program, Color clearColor);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_NextRenderPass", CallingConvention = CallingConvention.Winapi)]
+        public static extern void Graphics_NextRenderPass(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_EndRenderProgram", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_EndRenderProgram(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_UseRenderPipeline", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_UseRenderPipeline(IntPtr ptr, IntPtr pipeline);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_AwaitGraphicsIdle", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_AwaitGraphicsIdle(IntPtr ptr);
-
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetShaderVariable", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
         public static extern void Graphics_SetShaderVariable(IntPtr ptr, string variableName, IntPtr data, UIntPtr size);

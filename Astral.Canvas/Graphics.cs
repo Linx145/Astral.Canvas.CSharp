@@ -5,10 +5,12 @@ namespace Astral.Canvas
     public class Graphics
     {
         public IntPtr handle;
+        public RenderTarget currentRenderTarget;
 
         public Graphics(IntPtr handle)
         {
             this.handle = handle;
+            currentRenderTarget = null;
         }
         public Graphics(Application application)
         {
@@ -18,6 +20,10 @@ namespace Astral.Canvas
         public void StartRenderProgram(RenderProgram program, Color clearColor)
         {
             AstralCanvas.Graphics_StartRenderProgram(handle, program.handle, clearColor);
+        }
+        public void NextRenderPass()
+        {
+            AstralCanvas.Graphics_NextRenderPass(handle);
         }
         public void EndRenderProgram()
         {
@@ -29,6 +35,11 @@ namespace Astral.Canvas
             AstralCanvas.Graphics_UseRenderPipeline(handle, pipeline.handle);
         }
 
+        public void SetRenderTarget(RenderTarget renderTarget)
+        {
+            currentRenderTarget = renderTarget;
+            AstralCanvas.Graphics_SetRenderTarget(handle, renderTarget.handle);
+        }
         public void SetVertexBuffer(VertexBuffer vertexBuffer, uint bindSlot)
         {
             AstralCanvas.Graphics_SetVertexBuffer(handle, vertexBuffer.handle, bindSlot);
@@ -79,6 +90,10 @@ namespace Astral.Canvas
                 ptrs[i] = samplers[i].handle;
             }
             AstralCanvas.Graphics_SetShaderVariableSamplers(handle, variableName, (IntPtr)ptrs, (UIntPtr)samplers.Length);
+        }
+        public void AwaitGraphicsIdle()
+        {
+            AstralCanvas.Graphics_AwaitGraphicsIdle(handle);
         }
     }
 }

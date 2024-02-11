@@ -5,6 +5,8 @@ namespace Astral.Canvas
 {
     public class Application
     {
+        public static Application instance;
+        public static LoggingMode loggingMode;
         public IntPtr handle;
         public int windowsCount;
         public Graphics graphicsDevice;
@@ -13,6 +15,7 @@ namespace Astral.Canvas
         {
             handle = AstralCanvas.Application_Init(appName, engineName, appVersion, engineVersion, fps);
             graphicsDevice = new Graphics(this);
+            instance = this;
         }
 
         public string applicationName

@@ -4,7 +4,7 @@ namespace Astral.Canvas
 {
     public class Texture2D : IDisposable
     {
-        public IntPtr handle { get; private set; }
+        public IntPtr handle { get; internal set; }
         public readonly uint width;
         public readonly uint height;
         public readonly bool storesData;

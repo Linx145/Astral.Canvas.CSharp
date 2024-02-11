@@ -83,7 +83,7 @@ namespace CSharpAstralCanvasTest
             const float width = 26f;
             const float height = 19f;
             vertexBuffer = new VertexBuffer(VertexPositionColorTexture.Declaration, 4, false);
-            vertexBuffer.SetData(new VertexPositionColorTexture[] {
+            vertexBuffer.SetData<VertexPositionColorTexture>(new VertexPositionColorTexture[] {
                 new VertexPositionColorTexture(new Vector3(-width * 0.5f, -height * 0.5f, 0f), new Vector4(1f, 1f, 1f, 1f), new Vector2(0f, 0f)),
                 new VertexPositionColorTexture(new Vector3(width * 0.5f, -height * 0.5f, 0f), new Vector4(1f, 1f, 1f, 1f), new Vector2(1f, 0f)),
                 new VertexPositionColorTexture(new Vector3(width * 0.5f, height * 0.5f, 0f), new Vector4(1f, 1f, 1f, 1f), new Vector2(1f, 1f)),
