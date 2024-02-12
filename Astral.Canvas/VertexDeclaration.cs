@@ -3,12 +3,12 @@ using System.Runtime.InteropServices;
 
 namespace Astral.Canvas
 {
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Explicit, Size = 16)]
     public struct VertexElement
     {
         [FieldOffset(0)]
         public VertexElementFormat format;
-        [FieldOffset(4)]
+        [FieldOffset(8)]
         public UIntPtr offset;
 
         public VertexElement(VertexElementFormat format, uint offset)

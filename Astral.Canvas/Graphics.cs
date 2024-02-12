@@ -56,6 +56,10 @@ namespace Astral.Canvas
         {
             AstralCanvas.Graphics_SetVertexBuffer(handle, vertexBuffer.handle, bindSlot);
         }
+        public void SetInstanceBuffer(InstanceBuffer instanceBuffer, uint bindSlot)
+        {
+            AstralCanvas.Graphics_SetInstanceBuffer(handle, instanceBuffer.handle, bindSlot);
+        }
         public void SetIndexBuffer(IndexBuffer indexBuffer)
         {
             AstralCanvas.Graphics_SetIndexBuffer(handle, indexBuffer.handle);

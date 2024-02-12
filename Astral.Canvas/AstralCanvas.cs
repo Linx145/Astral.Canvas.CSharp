@@ -169,6 +169,17 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasIndexBuffer_SetData", CallingConvention = CallingConvention.Winapi)]
         public static extern void IndexBuffer_SetData(IntPtr ptr, IntPtr bytes, UIntPtr sizeOfBytes);
 
+        [DllImport(dllPath, EntryPoint = "AstralCanvasInstanceBuffer_GetInstanceSize", CallingConvention = CallingConvention.Winapi)]
+        public static extern UIntPtr InstanceBuffer_GetInstanceSize(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasInstanceBuffer_GetCount", CallingConvention = CallingConvention.Winapi)]
+        public static extern UIntPtr InstanceBuffer_GetCount(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasInstanceBuffer_Create", CallingConvention = CallingConvention.Winapi)]
+        public static extern IntPtr InstanceBuffer_Create(UIntPtr instanceSize, UIntPtr instanceCount, bool canRead);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasInstanceBuffer_Deinit", CallingConvention = CallingConvention.Winapi)]
+        public static extern void InstanceBuffer_Deinit(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasInstanceBuffer_SetData", CallingConvention = CallingConvention.Winapi)]
+        public static extern void InstanceBuffer_SetData(IntPtr ptr, IntPtr instanceData, UIntPtr instanceCount);
+
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetTexture", CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr RenderTarget_GetTexture(IntPtr ptr, UIntPtr index);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetDepthBuffer", CallingConvention = CallingConvention.Winapi)]
@@ -227,6 +238,8 @@ namespace Astral.Canvas
         public static extern void Graphics_SetClipArea(IntPtr ptr, int x, int y, int w, int h);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetVertexBuffer", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_SetVertexBuffer(IntPtr ptr, IntPtr vb, uint bindingPoint);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetInstanceBuffer", CallingConvention = CallingConvention.Winapi)]
+        public static extern void Graphics_SetInstanceBuffer(IntPtr ptr, IntPtr instanceBuffer, uint bindingPoint);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetIndexBuffer", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_SetIndexBuffer(IntPtr ptr, IntPtr indexBuffer);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetRenderTarget", CallingConvention = CallingConvention.Winapi)]
