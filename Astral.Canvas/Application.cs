@@ -56,10 +56,13 @@ namespace Astral.Canvas
             }
             return new Window(AstralCanvas.Application_GetWindow(handle, (uint)index));
         }
-
-        public void Run(AstralCanvas.UpdateFunction onUpdate, AstralCanvas.UpdateFunction onDraw, AstralCanvas.InitFunction onProgramInitialize, AstralCanvas.DeinitFunction onProgramEnd)
+        public void ResetDeltaTimer()
         {
-            AstralCanvas.Application_Run(handle, onUpdate, onDraw, onProgramInitialize, onProgramEnd);
+            AstralCanvas.Application_ResetDeltaTimer(handle);
+        }
+        public void Run(AstralCanvas.UpdateFunction onUpdate, AstralCanvas.UpdateFunction onDraw, AstralCanvas.UpdateFunction postEndDraw, AstralCanvas.InitFunction onProgramInitialize, AstralCanvas.DeinitFunction onProgramEnd)
+        {
+            AstralCanvas.Application_Run(handle, onUpdate, onDraw, postEndDraw, onProgramInitialize, onProgramEnd);
         }
     }
 }

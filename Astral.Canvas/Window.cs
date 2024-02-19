@@ -27,6 +27,17 @@ namespace Astral.Canvas
                 AstralCanvas.Window_SetResolution(handle, value);
             }
         }
+        public bool fullscreen
+        {
+            get
+            {
+                return AstralCanvas.Window_GetIsFullscreen(handle);
+            }
+            set
+            {
+                AstralCanvas.Window_SetFullscreen(handle, value);
+            }
+        }
         public Point position
         {
             get
@@ -49,6 +60,18 @@ namespace Astral.Canvas
                 AstralCanvas.Window_SetTitle(handle, value);
                 internalTitle = value;
             }
+        }
+        public void SetOnKeyInteractCallback(AstralCanvas.OnKeyInteractedFunction func)
+        {
+            AstralCanvas.Window_SetOnKeyInteractCallback(handle, func);
+        }
+        public void SetOnTextInputCallback(AstralCanvas.OnTextInputFunction func)
+        {
+            AstralCanvas.Window_SetOnTextInputCallback(handle, func);
+        }
+        public void Close()
+        {
+            AstralCanvas.Window_CloseWindow(handle);
         }
     }
 }

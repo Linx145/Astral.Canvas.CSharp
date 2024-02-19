@@ -30,6 +30,7 @@ namespace Astral.Canvas
         public static readonly BlendState AlphaBlend = new BlendState(Blend.One, Blend.InverseSourceAlpha);
         public static readonly BlendState NonPremultiplied = new BlendState(Blend.SourceAlpha, Blend.InverseSourceAlpha);
         public static readonly BlendState Opaque = new BlendState(Blend.One, Blend.Zero);
+        public static readonly BlendState None = new BlendState(Blend.Disable, Blend.Disable);
     }
     public class RenderPipeline : IDisposable
     {

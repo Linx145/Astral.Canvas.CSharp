@@ -57,6 +57,16 @@ namespace Astral.Canvas
             this.ownsHandle = ownsHandle;
             this.usedForRenderTarget = usedForRenderTarget;
         }
+        public unsafe ReadOnlySpan<T> GetData<T>() where T : unmanaged
+        {
+            void *ptr = AstralCanvas.Texture2D_GetData(handle);
+            return new ReadOnlySpan<T>(ptr, (int)((width * height * 4) / sizeof(T)));
+        }
+        public unsafe ReadOnlySpan<T> RetrieveCurrentData<T>() where T : unmanaged
+        {
+            void* ptr = AstralCanvas.Texture2D_RetrieveCurrentData(handle);
+            return new ReadOnlySpan<T>(ptr, (int)((width * height * 4) / sizeof(T)));
+        }
 
         public static Texture2D FromHandle(IntPtr imageHandle, uint width, uint height, ImageFormat imageFormat, bool usedForRenderTarget)
         {
