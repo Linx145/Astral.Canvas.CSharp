@@ -43,9 +43,19 @@ namespace Astral.Canvas
                 AstralCanvas.Application_SetFramesPerSecond(handle, value);
             }
         }
-        public void AddWindow(int width, int height, bool resizeable)
+        public unsafe void AddWindow(string name, int width, int height, bool resizeable, ReadOnlySpan<byte> iconData, uint iconWidth, uint iconHeight)
         {
-            AstralCanvas.Application_AddWindow(handle, width, height, resizeable);
+            if (iconData == null)
+            {
+                AstralCanvas.Application_AddWindow(handle, name, width, height, resizeable, IntPtr.Zero, 0, 0);
+            }
+            else
+            {
+                fixed (byte* ptr = iconData)
+                {
+                    AstralCanvas.Application_AddWindow(handle, name, width, height, resizeable, (IntPtr)ptr, iconWidth, iconHeight);
+                }
+            }
             windowsCount += 1;
         }
         public Window GetWindow(int index)

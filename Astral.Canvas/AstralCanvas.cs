@@ -31,8 +31,8 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_SetFramesPerSecond", CallingConvention = CallingConvention.Winapi)]
         public static extern float Application_SetFramesPerSecond(IntPtr handle, float fps);
 
-        [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_AddWindow", CallingConvention = CallingConvention.Winapi)]
-        public static extern void Application_AddWindow(IntPtr handle, int width, int height, bool resizeable);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_AddWindow", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+        public static extern void Application_AddWindow(IntPtr handle, string name, int width, int height, bool resizeable, IntPtr iconData, uint iconWidth, uint iconHeight);
         [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_GetWindow", CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr Application_GetWindow(IntPtr handle, uint index);
 
@@ -45,6 +45,11 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_GetGraphicsDevice", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern IntPtr Application_GetGraphicsDevice(IntPtr ptr);
 
+
+        [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetMouseVisible", CallingConvention = CallingConvention.Winapi)]
+        public static extern void Window_SetMouseVisible(IntPtr handle, bool visible);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetMouseIcon", CallingConvention = CallingConvention.Winapi)]
+        public static extern void Window_SetMouseIcon(IntPtr handle, IntPtr data, uint width, uint height, int originX, int originY);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_GetResolution", CallingConvention = CallingConvention.Winapi)]
         public static extern Point Window_GetResolution(IntPtr handle);
@@ -62,6 +67,7 @@ namespace Astral.Canvas
         public static extern Rectangle Window_AsRectangle(IntPtr handle);
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetTitle", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
         public static extern void Window_SetTitle(IntPtr ptr, string title);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_GetIsFullscreen", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Window_GetIsFullscreen(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetFullscreen", CallingConvention = CallingConvention.Winapi)]
@@ -119,14 +125,17 @@ namespace Astral.Canvas
         public static extern uint Texture2D_GetWidth(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_GetHeight", CallingConvention = CallingConvention.Winapi)]
         public static extern uint Texture2D_GetHeight(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_StoreData", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Texture2D_StoreData(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_GetMipLevels", CallingConvention = CallingConvention.Winapi)]
         public static extern uint Texture2D_GetMipLevels(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_GetImageFormat", CallingConvention = CallingConvention.Winapi)]
         public static extern ImageFormat Texture2D_GetImageFormat(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_OwnsHandle", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Texture2D_OwnsHandle(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_UsedForRenderTarget", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Texture2D_UsedForRenderTarget(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_GetImageHandle", CallingConvention = CallingConvention.Winapi)]
@@ -138,9 +147,9 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_FromHandle", CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr Texture2D_FromHandle(IntPtr handle, uint width, uint height, ImageFormat imageFormat, bool usedForRenderTarget);
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_FromData", CallingConvention = CallingConvention.Winapi)]
-        public static extern IntPtr Texture2D_FromData(IntPtr data, uint width, uint height, ImageFormat imageFormat, bool usedForRenderTarget);
+        public static extern IntPtr Texture2D_FromData(IntPtr data, uint width, uint height, ImageFormat imageFormat, bool usedForRenderTarget, bool storeData);
         [DllImport(dllPath, EntryPoint = "AstralCanvasTexture2D_FromFile", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
-        public static extern IntPtr Texture2D_FromFile(string fileName);
+        public static extern IntPtr Texture2D_FromFile(string fileName, bool storeData);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasVertexDeclaration_AddElement", CallingConvention = CallingConvention.Winapi)]
         public static extern void VertexDeclaration_AddElement(IntPtr ptr, VertexElement element);
@@ -204,10 +213,12 @@ namespace Astral.Canvas
         public static extern uint RenderTarget_GetWidth(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetHeight", CallingConvention = CallingConvention.Winapi)]
         public static extern uint RenderTarget_GetHeight(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_IsBackbuffer", CallingConvention = CallingConvention.Winapi)]
         public static extern bool RenderTarget_IsBackbuffer(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetHandle", CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr RenderTarget_GetHandle(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_GetUseStatus", CallingConvention = CallingConvention.Winapi)]
         public static extern bool RenderTarget_GetUseStatus(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderTarget_SetUseStatus", CallingConvention = CallingConvention.Winapi)]
@@ -314,8 +325,10 @@ namespace Astral.Canvas
         public static extern PrimitiveType RenderPipeline_GetPrimitiveType(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderPipeline_GetBlendState", CallingConvention = CallingConvention.Winapi)]
         public static extern BlendState RenderPipeline_GetBlendState(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderPipeline_IsDepthWrite", CallingConvention = CallingConvention.Winapi)]
         public static extern bool RenderPipeline_IsDepthWrite(IntPtr ptr);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderPipeline_IsDepthTest", CallingConvention = CallingConvention.Winapi)]
         public static extern bool RenderPipeline_IsDepthTest(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasRenderPipeline_Deinit", CallingConvention = CallingConvention.Winapi)]
@@ -331,21 +344,27 @@ namespace Astral.Canvas
             IntPtr* vertexDeclarations,
             UIntPtr vertexDeclarationCount);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_IsKeyDown", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_IsKeyDown(Keys key);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_IsKeyPressed", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_IsKeyPressed(Keys key);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_IsKeyReleased", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_IsKeyReleased(Keys key);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_IsMouseDown", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_IsMouseDown(MouseButtons button);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_IsMousePressed", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_IsMousePressed(MouseButtons button);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_IsMouseReleased", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_IsMouseReleased(MouseButtons button);
 
@@ -355,22 +374,28 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_SimulateMouseRelease", CallingConvention = CallingConvention.Winapi)]
         public static extern void Input_SimulateMouseRelease(MouseButtons button);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsButtonDown", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsButtonDown(uint controllerIndex, ControllerButtons button);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsButtonPress", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsButtonPress(uint controllerIndex, ControllerButtons button);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsButtonRelease", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsButtonRelease(uint controllerIndex, ControllerButtons button);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsR2Down", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsR2Down(uint controllerIndex);
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerGetR2DownAmount", CallingConvention = CallingConvention.Winapi)]
         public static extern float Input_ControllerGetR2DownAmount(uint controllerIndex);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsL2Down", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsL2Down(uint controllerIndex);
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerGetL2DownAmount", CallingConvention = CallingConvention.Winapi)]
         public static extern float Input_ControllerGetL2DownAmount(uint controllerIndex);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsConnected", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsConnected(uint controllerIndex);
 
@@ -379,12 +404,16 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_GetRightStickAxis", CallingConvention = CallingConvention.Winapi)]
         public static extern Vector2 Input_GetRightStickAxis(uint controllerIndex);
 
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsL2Pressed", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsL2Pressed(uint controllerIndex);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsR2Pressed", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsR2Pressed(uint controllerIndex);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsL2Released", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsL2Released(uint controllerIndex);
+        [return: MarshalAs(UnmanagedType.I1)]
         [DllImport(dllPath, EntryPoint = "AstralCanvasInput_ControllerIsR2Released", CallingConvention = CallingConvention.Winapi)]
         public static extern bool Input_ControllerIsR2Released(uint controllerIndex);
 

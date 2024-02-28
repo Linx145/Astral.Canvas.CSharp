@@ -6,6 +6,7 @@ namespace Astral.Canvas
     {
         public IntPtr handle;
         private string internalTitle;
+        private bool internalIsMouseVisible = true;
 
         public Window()
         {
@@ -25,6 +26,18 @@ namespace Astral.Canvas
             set
             {
                 AstralCanvas.Window_SetResolution(handle, value);
+            }
+        }
+        public bool isMouseVisible
+        {
+            get
+            {
+                return internalIsMouseVisible;
+            }
+            set
+            {
+                AstralCanvas.Window_SetMouseVisible(handle, value);
+                internalIsMouseVisible = value;
             }
         }
         public bool fullscreen
@@ -72,6 +85,24 @@ namespace Astral.Canvas
         public void Close()
         {
             AstralCanvas.Window_CloseWindow(handle);
+        }
+        public unsafe void SetMouseIcon(ReadOnlySpan<byte> data, uint width, uint height, int originX, int originY)
+        {
+            if (data == null)
+            {
+                AstralCanvas.Window_SetMouseIcon(handle, IntPtr.Zero, 0, 0, 0, 0);
+            }
+            else
+            {
+                fixed (byte* ptr = data)
+                {
+                    AstralCanvas.Window_SetMouseIcon(handle, (IntPtr)ptr, width, height, originX, originY);
+                }
+            }
+        }
+        public unsafe void SetMouseIcon(Texture2D texture, int originX, int originY)
+        {
+            SetMouseIcon(texture.RetrieveCurrentData<byte>(), texture.width, texture.height, originX, originY);
         }
     }
 }

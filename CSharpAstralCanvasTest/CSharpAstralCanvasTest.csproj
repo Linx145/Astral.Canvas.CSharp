@@ -17,9 +17,6 @@
     <None Update="tbh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Texture.shaderobj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Triangle.shaderobj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -74,8 +74,8 @@ namespace CSharpAstralCanvasTest
         public static void Start()
         {
             application = new Application("Hello World", "", 0, 0, 0f);
-            application.AddWindow(1920, 1080, true);
-            application.Run(Update, Draw, Initialize, Unload);
+            application.AddWindow("Triangle", 1920, 1080, true, null, 0, 0);
+            application.Run(Update, Draw, null, Initialize, Unload);
         }
     }
 }

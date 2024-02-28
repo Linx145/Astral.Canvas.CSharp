@@ -74,9 +74,11 @@ namespace CSharpAstralCanvasTest
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < allLines.Length; i++)
             {
-                sb.AppendLine(allLines[i]);
+                sb.Append(allLines[i]);
+                sb.Append("\n");
             }
-            shader = new Shader(ShaderType.VertexFragment, sb.ToString());
+            string asString = sb.ToString();
+            shader = new Shader(ShaderType.VertexFragment, asString);
 
             renderPipeline = new RenderPipeline(shader, CullMode.CullNone, PrimitiveType.TriangleList, BlendState.AlphaBlend, false, false, new VertexDeclaration[] { VertexPositionColorTexture.Declaration });
 
@@ -120,8 +122,8 @@ namespace CSharpAstralCanvasTest
         public static void Start()
         {
             application = new Application("YIPPEE", "", 0, 0, 0f);
-            application.AddWindow(1024, 768, true);
-            application.Run(Update, Draw, Initialize, Unload);
+            application.AddWindow("Texture", 1024, 768, true, null, 0, 0);
+            application.Run(Update, Draw, null, Initialize, Unload);
         }
     }
 }
