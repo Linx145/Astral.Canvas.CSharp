@@ -70,7 +70,7 @@ namespace Astral.Canvas
         {
             AstralCanvas.Application_ResetDeltaTimer(handle);
         }
-        public void Run(AstralCanvas.UpdateFunction onUpdate, AstralCanvas.UpdateFunction onDraw, AstralCanvas.UpdateFunction postEndDraw, AstralCanvas.InitFunction onProgramInitialize, AstralCanvas.DeinitFunction onProgramEnd)
+        public unsafe void Run(delegate* unmanaged<float, void> onUpdate, delegate* unmanaged<float, void> onDraw, delegate* unmanaged<float, void> postEndDraw, delegate* unmanaged<void> onProgramInitialize, delegate* unmanaged<void> onProgramEnd)
         {
             AstralCanvas.Application_Run(handle, onUpdate, onDraw, postEndDraw, onProgramInitialize, onProgramEnd);
         }

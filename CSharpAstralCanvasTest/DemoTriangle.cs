@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CSharpAstralCanvasTest
@@ -14,10 +15,12 @@ namespace CSharpAstralCanvasTest
         public static RenderProgram renderProgram;
         public static VertexBuffer vertexBuffer;
         public static IndexBuffer indexBuffer;
+        [UnmanagedCallersOnly]
         public static void Update(float deltaTime)
         {
 
         }
+        [UnmanagedCallersOnly]
         public static void Draw(float deltaTime)
         {
             application.graphicsDevice.StartRenderProgram(renderProgram, Color.Black);
@@ -31,6 +34,7 @@ namespace CSharpAstralCanvasTest
 
             application.graphicsDevice.EndRenderProgram();
         }
+        [UnmanagedCallersOnly]
         public static void Initialize()
         {
             string[] allLines = File.ReadAllLines("Triangle.shaderobj");
@@ -59,6 +63,7 @@ namespace CSharpAstralCanvasTest
             renderProgram.AddRenderPass(colorAttachment, depthAttachment);
             renderProgram.Construct();
         }
+        [UnmanagedCallersOnly]
         public static void Unload()
         {
             renderProgram.Dispose();
@@ -71,11 +76,11 @@ namespace CSharpAstralCanvasTest
 
             shader.Dispose();
         }
-        public static void Start()
+        public static unsafe void Start()
         {
             application = new Application("Hello World", "", 0, 0, 0f);
             application.AddWindow("Triangle", 1920, 1080, true, null, 0, 0);
-            application.Run(Update, Draw, null, Initialize, Unload);
+            application.Run(&Update, &Draw, null, &Initialize, &Unload);
         }
     }
 }

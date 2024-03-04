@@ -4,18 +4,19 @@ using System.Runtime.InteropServices;
 
 namespace Astral.Canvas
 {
-    public static class AstralCanvas
+    public static unsafe class AstralCanvas
     {
-        public delegate void UpdateFunction(float deltaTime);
-
-        public delegate void InitFunction();
-
-        public delegate void DeinitFunction();
-
         public delegate void OnKeyInteractedFunction(IntPtr windowHandle, Keys key, int action);
+
         public delegate void OnTextInputFunction(IntPtr windowHandle, uint unicodeCharacter);
 
         public const string dllPath = "Astral.Canvas.Dynamic";
+
+        [DllImport(dllPath, EntryPoint = "AstralCanvas_SetGlobalErrorCallback", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+        public static extern void SetGlobalErrorCallback(delegate* unmanaged<IntPtr, void> callback);
+
+        [DllImport(dllPath, EntryPoint = "AstralCanvas_SetGlobalWarningCallback", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi)]
+        public static extern void SetGlobalWarningCallback(delegate* unmanaged<IntPtr, void> callback);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_ResetDeltaTimer", CallingConvention = CallingConvention.Winapi)]
         public static extern void Application_ResetDeltaTimer(IntPtr ptr);
@@ -40,7 +41,7 @@ namespace Astral.Canvas
         public static extern IntPtr Application_Init(string appName, string engineName, uint appVersion, uint engineVersion, float framesPerSecond);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_Run", CallingConvention = CallingConvention.Winapi)]
-        public static unsafe extern void Application_Run(IntPtr handle, UpdateFunction updateFunc, UpdateFunction drawFunc, UpdateFunction postEndDrawFunc, InitFunction initFunc, DeinitFunction deinitFunc);
+        public static unsafe extern void Application_Run(IntPtr handle, delegate* unmanaged<float, void> updateFunc, delegate* unmanaged<float, void> drawFunc, delegate* unmanaged<float, void> postEndDrawFunc, delegate* unmanaged<void> initFunc, delegate* unmanaged<void> deinitFunc);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasApplication_GetGraphicsDevice", CallingConvention = CallingConvention.Winapi)]
         public static unsafe extern IntPtr Application_GetGraphicsDevice(IntPtr ptr);
@@ -73,11 +74,13 @@ namespace Astral.Canvas
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetFullscreen", CallingConvention = CallingConvention.Winapi)]
         public static extern void Window_SetFullscreen(IntPtr ptr, bool isFullscreen);
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetOnKeyInteractCallback", CallingConvention = CallingConvention.Winapi)]
-        public static extern void Window_SetOnKeyInteractCallback(IntPtr ptr, OnKeyInteractedFunction callback);
+        public static extern void Window_SetOnKeyInteractCallback(IntPtr ptr, [MarshalAs(UnmanagedType.FunctionPtr)] OnKeyInteractedFunction callback);
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_SetOnTextInputCallback", CallingConvention = CallingConvention.Winapi)]
-        public static extern void Window_SetOnTextInputCallback(IntPtr ptr, OnTextInputFunction callback);
+        public static extern void Window_SetOnTextInputCallback(IntPtr ptr, [MarshalAs(UnmanagedType.FunctionPtr)] OnTextInputFunction callback);
         [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_CloseWindow", CallingConvention = CallingConvention.Winapi)]
         public static extern void Window_CloseWindow(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasWindow_GetCurrentMonitorFramerate", CallingConvention = CallingConvention.Winapi)]
+        public static extern int Window_GetCurrentMonitorFramerate(IntPtr ptr);
 
         [DllImport(dllPath, EntryPoint = "AstralCanvasShader_GetType", CallingConvention = CallingConvention.Winapi)]
         public static extern ShaderType Shader_GetType(IntPtr ptr);
@@ -263,6 +266,11 @@ namespace Astral.Canvas
         public static extern Rectangle Graphics_GetClipArea(IntPtr ptr);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetClipArea", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_SetClipArea(IntPtr ptr, int x, int y, int w, int h);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_GetViewport", CallingConvention = CallingConvention.Winapi)]
+        public static extern Rectangle Graphics_GetViewport(IntPtr ptr);
+        [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetViewport", CallingConvention = CallingConvention.Winapi)]
+        public static extern void Graphics_SetViewport(IntPtr ptr, int x, int y, int w, int h);
+
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetVertexBuffer", CallingConvention = CallingConvention.Winapi)]
         public static extern void Graphics_SetVertexBuffer(IntPtr ptr, IntPtr vb, uint bindingPoint);
         [DllImport(dllPath, EntryPoint = "AstralCanvasGraphics_SetInstanceBuffer", CallingConvention = CallingConvention.Winapi)]

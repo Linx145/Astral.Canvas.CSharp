@@ -86,6 +86,10 @@ namespace Astral.Canvas
         {
             AstralCanvas.Window_CloseWindow(handle);
         }
+        public int GetCurrentMonitorRefreshRate()
+        {
+            return AstralCanvas.Window_GetCurrentMonitorFramerate(handle);
+        }
         public unsafe void SetMouseIcon(ReadOnlySpan<byte> data, uint width, uint height, int originX, int originY)
         {
             if (data == null)

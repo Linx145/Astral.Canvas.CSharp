@@ -76,6 +76,14 @@ namespace Astral.Canvas
         {
             AstralCanvas.Graphics_SetClipArea(handle, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
         }
+        public Rectangle GetViewport()
+        {
+            return AstralCanvas.Graphics_GetViewport(handle);
+        }
+        public void SetViewport(Rectangle rectangle)
+        {
+            AstralCanvas.Graphics_SetViewport(handle, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+        }
         public unsafe void SetShaderVariables<T>(string variableName, ReadOnlySpan<T> span) where T : unmanaged
         {
             fixed (T* ptr = span)

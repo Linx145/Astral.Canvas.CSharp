@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Text;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace CSharpAstralCanvasTest
 {
@@ -18,6 +19,7 @@ namespace CSharpAstralCanvasTest
         public static Vector2 drawPos;
 
         static float fpsRecordTime = 0f;
+        [UnmanagedCallersOnly]
         public static void Update(float deltaTime)
         {
             if (Input.IsKeyDown(Keys.A))
@@ -43,6 +45,7 @@ namespace CSharpAstralCanvasTest
                 fpsRecordTime -= 0.5f;
             }
         }
+        [UnmanagedCallersOnly]
         public static void Draw(float deltaTime)
         {
             Point resolution = application.GetWindow(0).resolution;
@@ -66,6 +69,7 @@ namespace CSharpAstralCanvasTest
 
             application.graphicsDevice.EndRenderProgram();
         }
+        [UnmanagedCallersOnly]
         public static void Initialize()
         {
             samplerState = new SamplerState(SampleMode.Point, RepeatMode.ClampToEdgeColor, false, 0f);
@@ -103,6 +107,7 @@ namespace CSharpAstralCanvasTest
 
             texture = Texture2D.FromFile("tbh.png");
         }
+        [UnmanagedCallersOnly]
         public static void Unload()
         {
             renderProgram.Dispose();
@@ -119,11 +124,11 @@ namespace CSharpAstralCanvasTest
 
             samplerState.Dispose();
         }
-        public static void Start()
+        public static unsafe void Start()
         {
             application = new Application("YIPPEE", "", 0, 0, 0f);
             application.AddWindow("Texture", 1024, 768, true, null, 0, 0);
-            application.Run(Update, Draw, null, Initialize, Unload);
+            application.Run(&Update, &Draw, null, &Initialize, &Unload);
         }
     }
 }
